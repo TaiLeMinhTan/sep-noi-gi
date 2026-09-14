@@ -1,0 +1,23 @@
+{
+  "name": "sep-noi-gi",
+  "version": "2.2.0",
+  "private": false,
+  "type": "module",
+  "description": "Visual chunk-based target-language-first workplace language learning, AI-ready.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check db.js && node --check ai.js && node --check public/js/app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.2.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2"
+  }
+}

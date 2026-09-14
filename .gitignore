@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .venv/
 .env
 __pycache__/
@@ -7,3 +8,11 @@ instance/*.db-shm
 instance/*.db-wal
 static/generated/visuals/*.webp
 !static/generated/visuals/.gitkeep
+=======
+node_modules/
+.env
+*.db
+*.db-shm
+*.db-wal
+.DS_Store
+>>>>>>> origin/main
