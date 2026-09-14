@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Sếp Nói Gì?</title>
+
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="{{ url_for('static', filename='favicon.svg') }}"
+  >
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/styles.css') }}"
+  >
+</head>
+
+<body class="app-body">
+
+<header
+  class="main-header"
+  id="mainHeader"
+>
+
+  <a
+    href="{{ url_for('index') }}"
+    class="brand"
+    title="Home"
+  >
+
+    <span class="brand-mark brand-mark-image">
+
+      <img
+        src="{{ url_for('static', filename='favicon.svg') }}"
+        alt="Sếp Nói Gì?"
+      >
+
+    </span>
+
+    <span class="brand-text">
+
+      <strong>
+        Sếp Nói Gì?
+      </strong>
+
+      <small>
+        Learn less. Use more.
+      </small>
+
+    </span>
+
+  </a>
+
+
+  <nav class="header-actions">
+
+    <a
+      class="header-link active"
+      href="{{ url_for('index') }}"
+      title="Home"
+    >
+      <span>⌂</span>
+      <b>Home</b>
+    </a>
+
+
+    <a
+      class="header-link"
+      href="{{ url_for('settings') }}"
+      title="Settings"
+    >
+      <span>⚙</span>
+      <b>Settings</b>
+    </a>
+
+
+    <form
+      method="post"
+      action="{{ url_for('logout') }}"
+    >
+
+      <button
+        class="header-icon-button"
+        type="submit"
+        title="Logout"
+      >
+        ↪
+      </button>
+
+    </form>
+
+  </nav>
+
+</header>
+
+
+
+<main
+  id="homePage"
+  class="home-page"
+>
+
+  <!-- ================================================= -->
+  <!-- MAIN ACTION + TODAY -->
+  <!-- ================================================= -->
+
+  <section class="home-hero">
+
+
+    <!-- ADD SENTENCE -->
+
+    <article class="capture-card">
+
+      <div class="capture-kicker">
+        ✦ HEARD SOMETHING TODAY?
+      </div>
+
+
+      <h1>
+        Add a sentence
+        <br>
+        you actually heard.
+      </h1>
+
+
+      <p>
+        From a meeting, email,
+        conversation or daily life.
+      </p>
+
+
+      <div class="capture-input-wrap">
+
+        <textarea
+          id="newSentenceInput"
+          maxlength="500"
+          placeholder="Example: We need to figure out what caused the failure."
+        ></textarea>
+
+
+        <button
+          id="createLessonButton"
+          class="learn-button"
+          type="button"
+          onclick="createLesson()"
+        >
+
+          <span>✨</span>
+
+          <span>
+            Learn this
+          </span>
+
+          <span>→</span>
+
+        </button>
+
+      </div>
+
+
+      <div
+        id="createLessonStatus"
+        class="inline-status"
+      ></div>
+
+    </article>
+    <!-- TODAY + THIS WEEK -->
+    <aside class="today-mini-card" aria-label="Today's learning progress">
+
+      <span class="mini-kicker">TODAY</span>
+
+      <div class="today-mini-top">
+
+        <div class="today-mini-copy">
+          <strong id="todayStatus">Ready to learn</strong>
+          <p id="todayHint">Complete 2 sentences</p>
+        </div>
+
+        <div
+          id="goalRing"
+          class="goal-ring"
+          style="--goal:0%"
+          aria-label="0 of 2 sentences completed today"
+        >
+          <div class="goal-ring-center">
+            <span id="todayGoalNumber">0</span>
+            <small>/2</small>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="week-progress">
+        <div class="week-progress-head">
+          <span>THIS WEEK</span>
+          <strong id="weekCompleted">0/7</strong>
+        </div>
+
+        <div
+          id="weekDots"
+          class="week-dots"
+          aria-label="Weekly learning progress"
+        ></div>
+      </div>
+
+    </aside>
+
+
+
+  </section>
+
+
+
+  <!-- ================================================= -->
+  <!-- TODAY'S SENTENCES -->
+  <!-- ================================================= -->
+
+  <section class="home-section today-section">
+
+    <div class="section-head">
+
+      <div>
+
+        <span class="section-kicker">
+          TODAY'S SENTENCES
+        </span>
+
+
+        <h2>
+          Learn what matters.
+        </h2>
+
+
+        <p>
+          Only two sentences.
+          Open one and go deep.
+        </p>
+
+      </div>
+
+
+      <span class="section-note">
+        2 max / day
+      </span>
+
+    </div>
+
+
+    <div
+      id="todayLessons"
+      class="today-lessons"
+    ></div>
+
+  </section>
+
+
+
+  <!-- ================================================= -->
+  <!-- REVIEW -->
+  <!-- ================================================= -->
+
+  <section class="home-section review-section">
+
+    <div class="section-head">
+
+      <div>
+
+        <span class="section-kicker review-kicker">
+          REVIEW
+        </span>
+
+
+        <h2>
+          Bring it back.
+        </h2>
+
+
+        <p>
+          See the sentence,
+          recall the pattern,
+          then open it only if needed.
+        </p>
+
+      </div>
+
+
+      <span
+        id="reviewCount"
+        class="review-count"
+      >
+        0 ready
+      </span>
+
+    </div>
+
+
+    <div
+      id="reviewList"
+      class="review-list"
+    ></div>
+
+  </section>
+
+</main>
+
+
+
+<!-- ===================================================== -->
+<!-- LESSON -->
+<!-- ===================================================== -->
+
+<section
+  id="lessonPage"
+  class="lesson-page hidden"
+>
+
+
+  <!-- SIMPLE HEADER -->
+
+  <header class="lesson-header">
+
+    <button
+      class="lesson-home-button"
+      type="button"
+      onclick="goHome()"
+      title="Home"
+    >
+
+      <span>
+        ⌂
+      </span>
+
+      <b>
+        Home
+      </b>
+
+    </button>
+
+
+
+    <!-- ONLY DOT PROGRESS -->
+
+    <div
+      class="lesson-dot-progress"
+      aria-label="Lesson progress"
+    >
+
+      <button
+        class="lesson-dot active"
+        data-step="0"
+        onclick="goToStep(0)"
+        aria-label="Step 1"
+      ></button>
+
+
+      <span></span>
+
+
+      <button
+        class="lesson-dot"
+        data-step="1"
+        onclick="goToStep(1)"
+        aria-label="Step 2"
+      ></button>
+
+
+      <span></span>
+
+
+      <button
+        class="lesson-dot"
+        data-step="2"
+        onclick="goToStep(2)"
+        aria-label="Step 3"
+      ></button>
+
+
+      <span></span>
+
+
+      <button
+        class="lesson-dot"
+        data-step="3"
+        onclick="goToStep(3)"
+        aria-label="Step 4"
+      ></button>
+
+
+      <span></span>
+
+
+      <button
+        class="lesson-dot"
+        data-step="4"
+        onclick="goToStep(4)"
+        aria-label="Step 5"
+      ></button>
+
+    </div>
+
+
+    <button
+      class="lesson-close"
+      type="button"
+      onclick="goHome()"
+      title="Close"
+    >
+      ×
+    </button>
+
+  </header>
+
+
+
+  <div
+    id="lessonScroller"
+    class="lesson-scroller"
+  >
+
+
+    <!-- ================================================= -->
+    <!-- 01 SEE -->
+    <!-- ================================================= -->
+
+    <section
+      id="lessonStep0"
+      class="lesson-step step-see is-visible"
+      data-step="0"
+    >
+
+      <div class="step-shell">
+
+
+        <div class="step-heading">
+
+          <span class="step-icon see-icon">
+            👁
+          </span>
+
+          <div>
+
+            <small>
+              01 / 05
+            </small>
+
+            <h2>
+              SEE IT
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <p class="step-helper">
+          Understand the scene first.
+          No translation.
+        </p>
+
+
+
+        <div class="visual-frame">
+
+          <div
+            id="visualLoading"
+            class="visual-state"
+          >
+
+            <div class="spinner"></div>
+
+            <span>
+              Preparing the visual...
+            </span>
+
+          </div>
+
+
+          <img
+            id="lessonVisual"
+            class="lesson-visual hidden"
+            alt="Visual meaning of the sentence"
+          >
+
+
+          <div
+            id="visualFallback"
+            class="visual-state hidden"
+          >
+            Visual is not available yet.
+          </div>
+
+        </div>
+
+
+
+        <!-- SENTENCE IS OUTSIDE IMAGE -->
+
+        <article class="study-sentence-card">
+
+          <span class="tiny-label">
+            YOUR SENTENCE
+          </span>
+
+
+          <div
+            id="seeSentence"
+            class="study-sentence"
+          ></div>
+
+
+          <div
+            id="seeHighlights"
+            class="chunk-pills"
+          ></div>
+
+        </article>
+
+
+        <button
+          class="step-next"
+          type="button"
+          onclick="goToStep(1)"
+        >
+          Continue
+          <span>↓</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 02 HEAR -->
+    <!-- ================================================= -->
+
+    <section
+      id="lessonStep1"
+      class="lesson-step step-hear"
+      data-step="1"
+    >
+
+      <div class="step-shell narrow-shell">
+
+
+        <div class="step-heading">
+
+          <span class="step-icon hear-icon">
+            🔊
+          </span>
+
+          <div>
+
+            <small>
+              02 / 05
+            </small>
+
+            <h2>
+              HEAR IT
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <p class="step-helper">
+          Listen for rhythm,
+          stress and connected speech.
+        </p>
+
+
+        <div
+          id="hearSentence"
+          class="hero-learning-sentence"
+        ></div>
+
+
+        <button
+          class="audio-button"
+          type="button"
+          onclick="speakCurrentSentence()"
+        >
+
+          <span>
+            ▶
+          </span>
+
+          <b>
+            Listen
+          </b>
+
+        </button>
+
+
+        <article class="pronunciation-box">
+
+          <span class="tiny-label">
+            SAY IT NATURALLY
+          </span>
+
+
+          <div id="pronunciationText"></div>
+
+        </article>
+
+
+        <button
+          class="step-next"
+          type="button"
+          onclick="goToStep(2)"
+        >
+          Continue
+          <span>↓</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 03 NOTICE -->
+    <!-- ================================================= -->
+
+    <section
+      id="lessonStep2"
+      class="lesson-step step-notice"
+      data-step="2"
+    >
+
+      <div class="step-shell narrow-shell">
+
+
+        <div class="step-heading">
+
+          <span class="step-icon notice-icon">
+            ✦
+          </span>
+
+          <div>
+
+            <small>
+              03 / 05
+            </small>
+
+            <h2>
+              NOTICE IT
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <p class="step-helper">
+          Notice the parts you can reuse
+          in another sentence.
+        </p>
+
+
+        <div
+          id="noticeSentence"
+          class="hero-learning-sentence"
+        ></div>
+
+
+        <div
+          id="patternsContainer"
+          class="patterns-container"
+        ></div>
+
+
+        <button
+          class="step-next"
+          type="button"
+          onclick="goToStep(3)"
+        >
+          Continue
+          <span>↓</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 04 USE -->
+    <!-- ================================================= -->
+
+    <section
+      id="lessonStep3"
+      class="lesson-step step-use"
+      data-step="3"
+    >
+
+      <div class="step-shell narrow-shell">
+
+
+        <div class="step-heading">
+
+          <span class="step-icon use-icon">
+            🧩
+          </span>
+
+          <div>
+
+            <small>
+              04 / 05
+            </small>
+
+            <h2>
+              USE IT
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <p class="step-helper">
+          See the same pattern
+          in nearby situations.
+        </p>
+
+
+        <div
+          id="usesContainer"
+          class="uses-list"
+        ></div>
+
+
+
+        <article class="quiz-card">
+
+          <span class="tiny-label">
+            WHICH SOUNDS NATURAL?
+          </span>
+
+
+          <div
+            id="quizOptions"
+            class="quiz-options"
+          ></div>
+
+
+          <div
+            id="quizFeedback"
+            class="quiz-feedback"
+          ></div>
+
+        </article>
+
+
+        <button
+          class="step-next"
+          type="button"
+          onclick="goToStep(4)"
+        >
+          Continue
+          <span>↓</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 05 YOUR TURN -->
+    <!-- ================================================= -->
+
+    <section
+      id="lessonStep4"
+      class="lesson-step step-turn"
+      data-step="4"
+    >
+
+      <div class="step-shell narrow-shell">
+
+
+        <div class="step-heading">
+
+          <span class="step-icon turn-icon">
+            💬
+          </span>
+
+          <div>
+
+            <small>
+              05 / 05
+            </small>
+
+            <h2>
+              YOUR TURN
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <p class="step-helper">
+          Use today's pattern
+          in your own words.
+        </p>
+
+
+
+        <article class="your-turn-card">
+
+          <span class="tiny-label">
+            NEW SITUATION
+          </span>
+
+
+          <div
+            id="turnPrompt"
+            class="turn-prompt"
+          ></div>
+
+
+          <textarea
+            id="turnInput"
+            placeholder="What would you say?"
+          ></textarea>
+
+
+          <button
+            class="learn-button turn-check"
+            type="button"
+            onclick="checkYourTurn()"
+          >
+            Check
+            <span>→</span>
+          </button>
+
+
+          <div
+            id="turnAnswer"
+            class="turn-answer hidden"
+          ></div>
+
+        </article>
+
+
+
+        <article
+          id="lessonCompleteBox"
+          class="complete-card hidden"
+        >
+
+          <span class="complete-icon">
+            ✓
+          </span>
+
+
+          <h3>
+            That is enough for today.
+          </h3>
+
+
+          <p>
+            One sentence you can use
+            is worth more than a long list
+            you forget.
+          </p>
+
+
+          <button
+            class="learn-button"
+            type="button"
+            onclick="completeLesson()"
+          >
+            Back home
+          </button>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</section>
+
+
+
+<!-- ===================================================== -->
+<!-- DEBUG ERROR -->
+<!-- ===================================================== -->
+
+<div
+  id="debugErrorOverlay"
+  class="debug-overlay hidden"
+>
+
+  <div class="debug-box">
+
+    <div class="debug-title-row">
+
+      <div>
+
+        <span class="error-kicker">
+          ERROR
+        </span>
+
+        <h2>
+          Something went wrong
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        onclick="closeDebugError()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <p>
+      Copy this message and send it
+      to ChatGPT for debugging.
+    </p>
+
+
+    <textarea
+      id="debugErrorText"
+      readonly
+    ></textarea>
+
+
+    <div class="debug-actions">
+
+      <button
+        class="learn-button"
+        type="button"
+        onclick="copyDebugError()"
+      >
+        Copy error
+      </button>
+
+
+      <button
+        class="secondary-button"
+        type="button"
+        onclick="closeDebugError()"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script
+  src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+</html>

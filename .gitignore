@@ -1,0 +1,9 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+instance/*.db
+instance/*.db-shm
+instance/*.db-wal
+static/generated/visuals/*.webp
+!static/generated/visuals/.gitkeep

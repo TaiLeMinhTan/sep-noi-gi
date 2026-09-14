@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Settings — Sếp Nói Gì?{% endblock %}
+{% block body %}
+<header class="main-header settings-header">
+    <a href="{{ url_for('index') }}" class="brand"><span class="brand-mark">S</span><span class="brand-text"><strong>Sếp Nói Gì?</strong><small>Learn less. Use more.</small></span></a>
+    <nav class="header-actions"><a class="header-link" href="{{ url_for('index') }}"><span>⌂</span><b>Home</b></a><a class="header-link active" href="{{ url_for('settings') }}"><span>⚙</span><b>Settings</b></a></nav>
+</header>
+<main class="settings-page">
+    <section class="settings-shell">
+        <div class="settings-intro"><span class="section-kicker">YOUR LEARNING CONTEXT</span><h1>Settings</h1><p>Change the context the AI uses for examples, vocabulary and pronunciation.</p>{% if saved %}<div class="settings-saved">✓ Saved.</div>{% endif %}</div>
+        <form method="post" class="profile-form settings-form">
+            <div class="profile-grid">
+                <label><span>Age</span><input name="age" type="number" min="10" max="100" value="{{ profile.age or '' }}"></label>
+                <label><span>Occupation</span><input name="occupation" required value="{{ profile.occupation or '' }}"></label>
+                <label><span>Industry</span><input name="industry" value="{{ profile.industry or '' }}"></label>
+                <label><span>English level</span><select name="english_level">{% for level in ['Beginner','Intermediate','Upper-intermediate','Advanced'] %}<option value="{{ level }}" {% if profile.english_level==level %}selected{% endif %}>{{ level }}</option>{% endfor %}</select></label>
+                <label class="profile-wide"><span>Situations you use English</span><textarea name="situations">{{ profile.situations or '' }}</textarea></label>
+                <label class="profile-wide"><span>Main goal</span><textarea name="goals">{{ profile.goals or '' }}</textarea></label>
+                <label><span>Accent</span><select name="preferred_accent">{% for code,label in [('en-US','US English'),('en-GB','UK English'),('en-AU','Australian English')] %}<option value="{{ code }}" {% if profile.preferred_accent==code %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+            </div>
+            <div class="profile-actions"><button class="auth-submit" type="submit">Save settings</button></div>
+        </form>
+        <div class="settings-note"><strong>AI configuration is separate.</strong><span>OpenAI keys, models and cost limits remain in the Admin console.</span></div>
+    </section>
+</main>
+{% endblock %}

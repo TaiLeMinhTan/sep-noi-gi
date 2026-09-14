@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Login — Sếp Nói Gì?{% endblock %}
+{% block body %}
+<main class="auth-page">
+    <section class="auth-shell">
+        <div class="auth-story">
+            <a class="auth-brand" href="{{ url_for('login') }}"><span class="brand-mark">S</span><span><strong>Sếp Nói Gì?</strong><small>Learn less. Use more.</small></span></a>
+            <div class="auth-story-copy"><span class="auth-kicker">PERSONAL ENGLISH COACH</span><h1>Learn the English<br><em>you actually need.</em></h1><p>Two useful sentences a day, shaped around your work and your real situations.</p></div>
+            <div class="auth-quote">See it → hear it → notice it → use it.</div>
+        </div>
+        <div class="auth-form-side">
+            <form class="auth-card" method="post">
+                <span class="auth-form-kicker">WELCOME BACK</span><h2>Continue learning.</h2>
+                {% if error %}<div class="auth-error">{{ error }}</div>{% endif %}
+                <label>Email<input name="email" type="email" autocomplete="email" required autofocus placeholder="you@example.com"></label>
+                <label>Password<input name="password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+                <button class="auth-submit" type="submit">Log in <span>→</span></button>
+                <p class="auth-note">New here? <a href="{{ url_for('register') }}">Create account</a></p>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

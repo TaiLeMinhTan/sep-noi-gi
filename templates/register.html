@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Register — Sếp Nói Gì?{% endblock %}
+{% block body %}
+<main class="auth-page">
+    <section class="auth-shell">
+        <div class="auth-story register-story">
+            <a class="auth-brand" href="{{ url_for('register') }}"><span class="brand-mark">S</span><span><strong>Sếp Nói Gì?</strong><small>Learn less. Use more.</small></span></a>
+            <div class="auth-story-copy"><span class="auth-kicker">START SMALL</span><h1>Two sentences.<br><em>Every day.</em></h1><p>Your profile helps the AI choose vocabulary, examples and situations that feel relevant to your real life.</p></div>
+            <div class="auth-quote">Your English should sound like your life.</div>
+        </div>
+        <div class="auth-form-side">
+            <form class="auth-card" method="post">
+                <span class="auth-form-kicker">CREATE ACCOUNT</span><h2>Start with you.</h2>
+                {% if error %}<div class="auth-error">{{ error }}</div>{% endif %}
+                <label>Your name<input name="name" required autocomplete="name" placeholder="Min"></label>
+                <label>Email<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+                <label>Password<input name="password" type="password" minlength="6" required autocomplete="new-password" placeholder="At least 6 characters"></label>
+                <button class="auth-submit" type="submit">Create & personalize <span>→</span></button>
+                <p class="auth-note">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}
